@@ -1,5 +1,11 @@
 .Header {
-    background-color:white;
-    padding-top:20px;
+    background-color: salmon;
 }
 
+.rojo{
+    color: blue;
+}
+
+.negrita {
+    font-weight: bold;
+}
