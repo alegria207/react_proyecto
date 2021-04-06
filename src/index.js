@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App app_title="String" />
+    <App app_title="Multiplier" />
   </React.StrictMode>,
   document.getElementById('root')
 );

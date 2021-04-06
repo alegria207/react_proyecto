@@ -1,17 +1,20 @@
 import React from 'react';
 import clases from './App.module.css';
 import Header from '../components/Header/Header';
-import ValidationComponent from '../components/ValidationComponent/ValidationComponent';
-import CharComponents from '../components/CharComponents/CharComponents';
-
+import Input from '../components/Input/Input';
+import Button from '../components/Button/Button';
+import Output from '../components/Output/Output';
 
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      input_string: '',
-    }
+      buttons: [
+        { factor: 37, on_use: false },
+        { factor: 43, on_use: false }
+      ]}
+
   }
 
   componentDidMount() {
@@ -21,21 +24,28 @@ class App extends React.Component {
     console.log('<App> se va a desmontar');
   }
 
-
   updateInputValue = (event) => {
     this.setState({
-      input_string: event.target.value,
+      input_value: event.target.value
     })
   } 
 
-  calculateLenght = (string) => {
-    return string.length
-  } 
+  multiplyAndChangeButtonStatus = (id_clicked, not_id_clicked) => {
+    this.multiply(id_clicked)
+    this.changeButtonStatus(id_clicked, not_id_clicked)
+  }
+    
+  multiply = (id) => {   
+    this.setState({
+      output_value: this.state.input_value*this.state.buttons[id].factor
+    })
+  }
 
-  removeChar = (id) => {
-    let str = this.state.input_string;
-    str = this.state.input_string.slice(0, id) + this.state.input_string.slice(id+1);
-    this.setState({ input_string: str });
+  changeButtonStatus = (id_clicked, not_id_clicked) => {
+    let buttns = [...this.state.buttons];
+    buttns[id_clicked].on_use = true;
+    buttns[not_id_clicked].on_use = false;
+    this.setState({ buttons: buttns });
   }
 
 
@@ -44,12 +54,14 @@ class App extends React.Component {
     return (
       <div className={clases.App}>
         <Header title={this.props.app_title}/>
-        <input onChange={this.updateInputValue} value={this.state.input_string}/>
-        <p> Longitud: {this.calculateLenght(this.state.input_string)}</p>
-        <ValidationComponent length={this.calculateLenght(this.state.input_string)}/>
-        <CharComponents
-          chars={this.state.input_string}
-          remove={this.removeChar}/>
+        <Input input_value={this.updateInputValue}/>
+        <Button factor={this.state.buttons[0].factor} 
+                on_use={this.state.buttons[0].on_use} 
+                click={() => this.multiplyAndChangeButtonStatus(0, 1)}/>
+        <Button factor={this.state.buttons[1].factor} 
+                on_use={this.state.buttons[1].on_use} 
+                click={() => this.multiplyAndChangeButtonStatus(1, 0)}/>
+        <Output dataSource={this.state.output_value} />
       </div>
     )
   }
