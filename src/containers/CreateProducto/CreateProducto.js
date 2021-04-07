@@ -5,20 +5,19 @@ import {Redirect} from 'react-router-dom';
 class CreateProducto extends React.Component {
     state = {
         nombre: '',
-        edad: '',
-        poblacion: '',
-        imagen: '',
+        precio: '',
+        foto: '',
         grabado: false
     }
 
     grabaProducto = () => {
         const data = {
             nombre: this.state.nombre,
-            edad: parseInt(this.state.edad),
-            poblacion: this.state.poblacion,
-            imagen:  this.state.imagen
+            precio: parseFloat(this.state.precio),
+            foto:  this.state.foto
         };
-        axios.post('https://my-demoblog.firebaseio.com/personas.json', data)
+        axios.post('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/productos.json', data)
+        //axios.post('https://my-demoblog.firebaseio.com/personas.json', data)
             .then(response => {
                 alert('Producto grabado');
                 this.setState({grabado:true});
@@ -40,22 +39,16 @@ class CreateProducto extends React.Component {
                         onChange={(event) => this.setState({ nombre: event.target.value })} />
                 </div>
                 <div>
-                    <label>Edad: </label>
+                    <label>Precio: </label>
                     <input type="text"
-                        value={this.state.edad}
-                        onChange={(event) => this.setState({ edad: event.target.value })} />
+                        value={this.state.precio}
+                        onChange={(event) => this.setState({ precio: event.target.value })} />
                 </div>
                 <div>
-                    <label>Población: </label>
-                    <input type="text"
-                        value={this.state.poblacion}
-                        onChange={(event) => this.setState({ poblacion: event.target.value })} />
-                </div>
-                <div>
-                    <label>Imagen: </label>
+                    <label>Foto: </label>
                     <input type="textarea"
-                        value={this.state.imagen}
-                        onChange={(event) => this.setState({ imagen: event.target.value })} />
+                        value={this.state.foto}
+                        onChange={(event) => this.setState({ foto: event.target.value })} />
                 </div>
                 <button onClick={this.grabaProducto}>Crear Producto</button>
                 {redireccion}

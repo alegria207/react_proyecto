@@ -14,10 +14,14 @@ class Productos extends React.Component {
             <React.Fragment>
                 {this.props.productos.map((producto, id) => {
                     return <ErrorBoundary key={id}><Producto nombre={producto.nombre}
-                        edad={producto.edad}
+                        precio={producto.precio}
+                        foto={producto.foto}
                         id={producto.idb}
+                        cantidad={producto.cantidad}
                         cambiando={(event) => this.props.escribir(event, id)}
-                        borrando={() => this.props.borrar(id,producto.idb)} />
+                        borrando={() => this.props.borrar(id,producto.idb)} 
+                        quitando={() => this.props.quitar(id,producto.idb)}
+                        añadiendo={() => this.props.añadir(id,producto.idb)}/>
                     </ErrorBoundary>
                 })}
             </React.Fragment>

@@ -12,7 +12,7 @@ class ProductoDetail extends React.Component {
     componentDidMount() {
         console.log('<ProductoDetail> se ha montado');
         const id = this.props.match.params.id;
-        axios.get('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/personas.json?orderBy="$key"&equalTo="' + id + '"')
+        axios.get('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/productos.json?orderBy="$key"&equalTo="' + id + '"')
         //axios.get('https://my-demoblog.firebaseio.com/personas.json?orderBy="$key"&equalTo="' + id + '"')
             .then(response => {
                 const producto = [];

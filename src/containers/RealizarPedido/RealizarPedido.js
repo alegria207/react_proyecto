@@ -16,21 +16,24 @@ class RealizarPedido extends React.Component {
       mostrar: true,
       autenticado: false,
       otroValor: 'Hola',
-      error: false
+      error: false,
+      total_pedido: 0
     }
   }
 
   componentDidMount() {
     console.log('<RealizarPedido> se ha montado');
-    axios.get('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/personas.json')
+    axios.get('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/productos.json')
     //axios.get('https://my-demoblog.firebaseio.com/personas.json')
       .then(response => {
         let productos = [];
         for (let key in response.data) {
           productos.push({
+            foto: response.data[key].foto,
             nombre: response.data[key].nombre,
-            edad: response.data[key].edad,
-            idb: key
+            precio: response.data[key].precio,
+            idb: key, 
+            cantidad: 0
           });
         }
         // for (let key in response.data) {
@@ -66,16 +69,33 @@ class RealizarPedido extends React.Component {
   }
 
   borraproducto = (id, idb) => {
-    axios.delete('https://my-demoblog.firebaseio.com/personas/' + idb + '.json')
+    axios.delete('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/productos/' + idb + '.json')
+    //axios.delete('https://my-demoblog.firebaseio.com/personas/' + idb + '.json')
       .then(response => {
         console.log(response);
       });
     let products = [...this.state.productos];
     products.splice(id, 1);
-    //products[id].nombre = 'Borrado';
     this.setState({ productos: products });
   }
 
+  quitarCantidadProducto = (id, idb) => {
+
+    let products = [...this.state.productos];
+    if (products[id].cantidad>0){
+      products[id].cantidad-=1;
+    }
+    this.setState({ productos: products });
+  }
+
+  añadirCantidadProducto = (id, idb) => {
+
+    let products = [...this.state.productos];
+    products[id].cantidad+=1;
+    //products[id].nombre = 'Borrado';
+    this.setState({ productos: products });
+  }
+  
   mostrarOcultar = () => {
     let ver = this.state.mostrar;
     this.setState({ mostrar: !ver })
@@ -110,7 +130,9 @@ class RealizarPedido extends React.Component {
         <Productos
           productos={this.state.productos}
           escribir={this.cambiaNombre}
-          borrar={this.borraproducto} />
+          borrar={this.borraproducto}
+          quitar={this.quitarCantidadProducto}
+          añadir={this.añadirCantidadProducto} />
         // <div>
         //   {this.state.productos.map((producto, id) => {
         //     return <Producto nombre={producto.nombre}
@@ -126,7 +148,7 @@ class RealizarPedido extends React.Component {
     return (
       <div className={clases.RealizarPedido}>
 
-        <Showhide mostrarocultar={this.mostrarOcultar} />
+        <p>Total pedido: {this.state.total_pedido} </p> 
         <ContextoAutenticado.Provider
           value={{
             autenticado: this.state.autenticado,
@@ -143,3 +165,23 @@ class RealizarPedido extends React.Component {
 }
 
 export default RealizarPedido;
+
+/*
+    return (
+      <div className={clases.RealizarPedido}>
+
+        <Showhide mostrarocultar={this.mostrarOcultar} />
+        <ContextoAutenticado.Provider
+          value={{
+            autenticado: this.state.autenticado,
+            otroValor: this.state.otroValor,
+            cambiaLogin: this.cambiaLogin
+          }}>
+          {listaproductos}
+        </ContextoAutenticado.Provider>
+
+      </div>
+    )
+
+
+*/

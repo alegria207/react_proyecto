@@ -8,24 +8,23 @@ import {Redirect} from 'react-router-dom';
 class EditPerson extends React.Component {
     state = {
         nombre: '',
-        edad: '',
-        poblacion: '',
-        imagen: '',
+        precio: '',
+        foto: '',
         id: '',
         actualizado: false
     }
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        axios.get('https://my-demoblog.firebaseio.com/personas.json?orderBy="$key"&equalTo="' + id + '"')
+        axios.get('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/productos.json?orderBy="$key"&equalTo="' + id + '"')
+        //axios.get('https://my-demoblog.firebaseio.com/personas.json?orderBy="$key"&equalTo="' + id + '"')
             .then(response => {
                 const producto = [];
                 for (let key in response.data) {
                     this.setState({
                         nombre: response.data[key].nombre,
-                        edad: response.data[key].edad,
-                        poblacion: response.data[key].poblacion,
-                        imagen: response.data[key].imagen,
+                        precio: response.data[key].precio,
+                        foto: response.data[key].foto,
                         id: id
                     })
                     // producto.push({
@@ -39,11 +38,11 @@ class EditPerson extends React.Component {
     actualizaProducto = () => {
         const data = {
             nombre: this.state.nombre,
-            edad: parseInt(this.state.edad),
-            poblacion: this.state.poblacion,
-            imagen: this.state.imagen
+            precio: parseFloat(this.state.precio),
+            foto: this.state.foto
         };
-        axios.put('https://my-demoblog.firebaseio.com/personas/' + this.state.id + '.json', data)
+        axios.put('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/productos/' + this.state.id + '.json', data)
+        //axios.put('https://my-demoblog.firebaseio.com/personas/' + this.state.id + '.json', data)
             .then(response => {
                 alert('Producto actualizado');
                 this.setState({actualizado:true});
@@ -65,22 +64,16 @@ class EditPerson extends React.Component {
                         onChange={(event) => this.setState({ nombre: event.target.value })} />
                 </div>
                 <div>
-                    <label>Edad: </label>
+                    <label>Precio: </label>
                     <input type="text"
-                        value={this.state.edad}
-                        onChange={(event) => this.setState({ edad: event.target.value })} />
+                        value={this.state.precio}
+                        onChange={(event) => this.setState({ precio: event.target.value })} />
                 </div>
                 <div>
-                    <label>Población: </label>
+                    <label>Foto: </label>
                     <input type="text"
-                        value={this.state.poblacion}
-                        onChange={(event) => this.setState({ poblacion: event.target.value })} />
-                </div>
-                <div>
-                    <label>Imagen: </label>
-                    <input type="text"
-                        value={this.state.imagen}
-                        onChange={(event) => this.setState({ imagen: event.target.value })} />
+                        value={this.state.foto}
+                        onChange={(event) => this.setState({ foto: event.target.value })} />
                 </div>
                 <button onClick={this.actualizaProducto}>Actualizar Producto</button>
             </>

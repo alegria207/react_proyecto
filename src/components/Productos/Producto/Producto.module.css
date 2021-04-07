@@ -1,6 +1,23 @@
 .Producto {
-    width: 60%;
+    width: 50%;
     margin: 16px auto;
     border: 1px solid rgb(56, 56, 56);
     padding: 16px;
+}
+
+.BotonMas {
+    border: 2px solid rgb(0, 0, 0);
+    background-color: rgba(0, 255, 85, 0.63);
+    border-radius: 30px;
+    text-align: center;
+    width: 35px;
+}
+
+.BotonMenos {
+    border: 2px solid rgb(0, 0, 0);
+    background-color: rgba(255, 0, 0, 0.479);
+    border-radius: 30px;
+    text-align: center;
+    width: 35px;
+
 }
