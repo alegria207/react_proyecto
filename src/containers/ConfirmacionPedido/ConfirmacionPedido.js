@@ -2,7 +2,6 @@ import React from 'react';
 import ProductosCarro from '../../components/ProductosCarro/ProductosCarro';
 import Formulario from '../../components/Formulario/Formulario';
 import Boton from '../../components/Boton/Boton'
-import {Link} from 'react-router-dom';
 
 class ConfirmacionPedido extends React.Component {
 
@@ -15,17 +14,11 @@ class ConfirmacionPedido extends React.Component {
         }
     }
 
-
     mostrarFormulario= () => {
         this.setState({ mostrar_formulario: true })
       }
     
-    realizarPedido= () => {
-        console.log("eeeeeeeeeeee")
-      }
-
     render() {
-        console.log(this.state.carrito)
         let listaproductoscarro = null;
 
         listaproductoscarro = (
@@ -43,20 +36,13 @@ class ConfirmacionPedido extends React.Component {
             botoncontinuar = <Boton contenido="Continuar" click={() => this.mostrarFormulario() }/>
         }
 
-        console.log(this.state.mostrar_formulario)
         return (
             <>
-                <p> 
-                    {botoncontinuar}
-                    
-                </p>
+                <p>{botoncontinuar}</p>
                 {formulario}
                 <b>Detalles del pedido: </b>
-                
                 {listaproductoscarro}
-
-                <b> Total: {this.state.total_pedido}€ </b>
-
+                <p><b> Total: {this.state.total_pedido}€ </b> </p>
             </>
         )
     }

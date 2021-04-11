@@ -13,7 +13,6 @@ class PedidoDetail extends React.Component {
         console.log('<PedidoDetail> se ha montado');
         const id = this.props.match.params.id;
         axios.get('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/pedidos.json?orderBy="$key"&equalTo="' + id + '"')
-        //axios.get('https://my-demoblog.firebaseio.com/personas.json?orderBy="$key"&equalTo="' + id + '"')
             .then(response => {
                 const pedido = [];
                 for (let key in response.data) {
@@ -27,7 +26,7 @@ class PedidoDetail extends React.Component {
     }
     render() {
         const id = this.props.match.params.id;
-        return ( //ver detalles
+        return ( 
             <>
                 <b>Ficha pedido id {this.state.pedido.idb}</b> 
                 <FichaPedido datos={this.state.pedido} />

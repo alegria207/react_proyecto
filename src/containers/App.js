@@ -4,8 +4,6 @@ import Header from '../components/Header/Header';
 import RealizarPedido from '../containers/RealizarPedido/RealizarPedido';
 import PedidosRealizados from './PedidosRealizados/PedidosRealizados';
 import PedidoDetail from './PedidoDetail/PedidoDetail';
-import CreateProducto from './CreateProducto/CreateProducto';
-import EditProducto from './EditProducto/EditProducto';
 import ConfirmacionPedido from './ConfirmacionPedido/ConfirmacionPedido';
 import Agradecimiento from './Agradecimiento/Agradecimiento';
 
@@ -37,7 +35,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.total_pedido)
     return (
       <div className={clases.App}>
         <Header titulo="Tienda de escalada" />
@@ -50,9 +47,6 @@ class App extends React.Component {
                 </li>
                 <li>
                   <Link to="/pedidos_realizados">Pedidos realizados</Link>
-                </li>
-                <li>
-                  <Link to="/addproducto">Crear producto</Link>
                 </li>
               </ul>
             </nav>
@@ -69,12 +63,6 @@ class App extends React.Component {
               </Route>
               <Route path="/agradecimiento">
                 <Agradecimiento/>
-              </Route>
-              <Route path="/addproducto">
-                <CreateProducto />
-              </Route>
-              <Route path="/editproducto/:id">
-                <EditProducto />
               </Route>
               <Route path="/">
                 <RealizarPedido actualizarTotal={this.actualizarTotalPedido} actualizarCarro={this.actualizarCarrito}/>

@@ -2,13 +2,12 @@ import React from 'react';
 import axios from 'axios';
 import clases from './Formulario.module.css';
 import {Redirect} from 'react-router-dom';
-import {Link} from 'react-router-dom';
 
 class Formulario extends React.Component {
     state = {
         nombre: '',
         apellido1: '',
-        appelido2: '',
+        apellido2: '',
         telefono: '',
         mail: '',
         direccion: '',
@@ -18,22 +17,21 @@ class Formulario extends React.Component {
     grabaPedido = () => {
         const data = {
             nombre: this.state.nombre,
-            appelido1: this.state.appelido1,
-            appelido2: this.state.appelido2,
+            apellido1: this.state.apellido1,
+            apellido2: this.state.apellido2,
             telefono: this.state.telefono,
             mail: this.state.mail,
             direccion: this.state.direccion,
             carrito: this.props.carrito_contenido,
         };
         axios.post('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/pedidos.json', data)
-        //axios.post('https://my-demoblog.firebaseio.com/personas.json', data)
             .then(response => {
                 this.setState({grabado:true});
             });
     }
 
     render() {
-        console.log(this.props.carrito_contenido)
+
         let redireccion = null;
         if(this.state.grabado){
             redireccion = (<div><Redirect to="/agradecimiento" /></div>);
@@ -51,19 +49,19 @@ class Formulario extends React.Component {
                     </li>
                 </div>
                 <div>
-                    <label>Appelido1: </label>
+                    <label>Apellido1: </label>
                     <li>
                     <input type="text"
-                        value={this.state.appelido1}
-                        onChange={(event) => this.setState({ appelido1: event.target.value })} />
+                        value={this.state.apellido1}
+                        onChange={(event) => this.setState({ apellido1: event.target.value })} />
                     </li>
                 </div>
                 <div>
-                    <label>Appelido2: </label>
+                    <label>Apellido2: </label>
                     <li>
                     <input type="text"
-                        value={this.state.appelido2}
-                        onChange={(event) => this.setState({ appelido2: event.target.value })} />
+                        value={this.state.apellido2}
+                        onChange={(event) => this.setState({ apellido2: event.target.value })} />
                     </li>
                 </div>
                 <div>

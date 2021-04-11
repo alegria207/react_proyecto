@@ -1,5 +1,4 @@
 import React from 'react';
-import clases from './PedidosRealizados.module.css';
 import Pedidos from '../../components/Pedidos/Pedidos';
 import axios from 'axios';
 
@@ -15,7 +14,6 @@ class PedidosRealizados extends React.Component {
   componentDidMount() {
     console.log('<PedidosRealizados> se ha montado');
     axios.get('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/pedidos.json')
-    //axios.get('https://my-demoblog.firebaseio.com/personas.json')
       .then(response => {
         let pedidos = [];
         for (let key in response.data) {
@@ -44,7 +42,6 @@ class PedidosRealizados extends React.Component {
 
   borrapedido = (id, idb) => {
     axios.delete('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/pedidos/' + idb + '.json')
-    //axios.delete('https://my-demoblog.firebaseio.com/personas/' + idb + '.json')
       .then(response => {
         console.log(response);
       });
@@ -56,18 +53,16 @@ class PedidosRealizados extends React.Component {
 
   render() {
 
-
     let listapedidos = null;
 
     listapedidos = (
         <Pedidos
           pedidos={this.state.pedidos}
           borrar={this.borrapedido}/>
-
       )
 
     return (
-      <div className={clases.PedidosRealizados}>
+      <div>
         {listapedidos}
       </div>
     )

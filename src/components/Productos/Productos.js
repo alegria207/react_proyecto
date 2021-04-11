@@ -18,10 +18,8 @@ class Productos extends React.Component {
                         foto={producto.foto}
                         id={producto.idb}
                         cantidad={producto.cantidad}
-                        cambiando={(event) => this.props.escribir(event, id)}
-                        borrando={() => this.props.borrar(id,producto.idb)} 
-                        quitando={() => this.props.quitar(id,producto.idb)}
-                        añadiendo={() => this.props.añadir(id,producto.idb)}/>
+                        quitando={() => this.props.quitar(id)}
+                        añadiendo={() => this.props.añadir(id)}/>
                     </ErrorBoundary>
                 })}
             </React.Fragment>

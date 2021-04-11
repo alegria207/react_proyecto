@@ -10,12 +10,8 @@ class Boton extends React.Component {
     render() {
         return (
             <button onClick={this.props.click}>{this.props.contenido} </button>
-
-
-   
         )
     }
 }
 
 export default Boton;
-
