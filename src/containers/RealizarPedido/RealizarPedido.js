@@ -3,10 +3,8 @@ import clases from './RealizarPedido.module.css';
 import Productos from '../../components/Productos/Productos';
 import Showhide from '../../components/Showhide/Showhide';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
-export const ContextoAutenticado = React.createContext({
-  autenticado: false,
-});
 
 class RealizarPedido extends React.Component {
   constructor(props) {
@@ -17,7 +15,8 @@ class RealizarPedido extends React.Component {
       autenticado: false,
       otroValor: 'Hola',
       error: false,
-      total_pedido: 0
+      total_pedido: 0,
+      carrito: [],
     }
   }
 
@@ -36,37 +35,18 @@ class RealizarPedido extends React.Component {
             cantidad: 0
           });
         }
-        // for (let key in response.data) {
-        //   productos.push({
-        //     ...response.data[key],
-        //     idb: key
-        //   });
-        // }
+
         this.setState({ productos: productos });
       }).catch(error => {
         this.setState({ error: true });
       });
+      this.props.actualizarCarro(this.state.carrito)
+      this.props.actualizarTotal(this.state.total_pedido)
   }
   componentWillUnmount() {
     console.log('<RealizarPedido> se va a desmontar');
   }
 
-  cambiaUnNombre = (nuevoNombre) => {
-    //console.log('Entra');
-    this.setState({
-      productos: [
-        { nombre: nuevoNombre, edad: '24' },
-        { nombre: 'Luis', edad: '25' },
-        { nombre: 'Juan', edad: '22' }
-      ]
-    })
-  }
-
-  cambiaNombre = (event, id) => {
-    let products = [...this.state.productos];
-    products[id].nombre = event.target.value;
-    this.setState({ productos: products });
-  }
 
   borraproducto = (id, idb) => {
     axios.delete('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/productos/' + idb + '.json')
@@ -86,6 +66,8 @@ class RealizarPedido extends React.Component {
       products[id].cantidad-=1;
     }
     this.setState({ productos: products });
+    this.calcularTotalPedido();
+    this.calcularCarrito();
   }
 
   añadirCantidadProducto = (id, idb) => {
@@ -94,38 +76,39 @@ class RealizarPedido extends React.Component {
     products[id].cantidad+=1;
     //products[id].nombre = 'Borrado';
     this.setState({ productos: products });
-  }
-  
-  mostrarOcultar = () => {
-    let ver = this.state.mostrar;
-    this.setState({ mostrar: !ver })
+    this.calcularTotalPedido();
+    this.calcularCarrito();
   }
 
-  cambiaLogin = () => {
-    const autenticado = this.state.autenticado;
-    this.setState({ autenticado: !autenticado });
+  calcularCarrito = () => {
+    let carro = [];
+    for(let i in this.state.productos){
+      if (this.state.productos[i].cantidad > 0){
+        carro.push(this.state.productos[i])
+      }
+    }
+    this.setState({ carrito: carro });
+    this.props.actualizarCarro(carro)
+
   }
+
+  calcularTotalPedido = () => {
+    let total = 0;
+    {this.state.productos.map((producto, id) => {
+      total += producto.cantidad*producto.precio
+      })}
+    total = Number((total).toFixed(2))
+    this.setState({ total_pedido: total })
+    this.props.actualizarTotal(total)
+  }
+
 
   render() {
 
 
     let listaproductos = null;
     if (this.state.mostrar) {
-      // listaproductos = (
-      //   <div>
-      //     <Product nombre={this.state.productos[0].nombre}
-      //       edad={this.state.productos[0].edad}
-      //       cambiando={(event) => this.cambiaNombre(event, 0)}
-      //       borrando={() => this.borraproducto(0)} />
-      //     <Product nombre={this.state.productos[1].nombre}
-      //       edad={this.state.productos[1].edad}
-      //       cambiando={(event) => this.cambiaNombre(event, 1)}
-      //       borrando={() => this.borraproducto(1)} />
-      //     <Product nombre={this.state.productos[2].nombre}
-      //       edad={this.state.productos[2].edad}
-      //       cambiando={(event) => this.cambiaNombre(event, 2)}
-      //       borrando={() => this.borraproducto(2)}>Saludo desde aquí</Product>
-      //   </div>)
+
       listaproductos = (
         <Productos
           productos={this.state.productos}
@@ -133,30 +116,22 @@ class RealizarPedido extends React.Component {
           borrar={this.borraproducto}
           quitar={this.quitarCantidadProducto}
           añadir={this.añadirCantidadProducto} />
-        // <div>
-        //   {this.state.productos.map((producto, id) => {
-        //     return <Producto nombre={producto.nombre}
-        //     key={id}
-        //     edad={producto.edad}
-        //     cambiando={(event) => this.cambiaNombre(event, id)}
-        //     borrando={() => this.borraproducto(id)} />
-        //   })}
-        // </div>
+
       )
     }
 
+    const enlace = '/confirmacionpedido';
+    console.log(this.state.carrito)
+
     return (
       <div className={clases.RealizarPedido}>
+        <div className={clases.Total}>
+          <b className={clases.TotalContenido}> Total pedido: {this.state.total_pedido}€ </b>
+          <Link to={enlace}><button>Realizar pedido </button></Link>
+        </div>
 
-        <p>Total pedido: {this.state.total_pedido} </p> 
-        <ContextoAutenticado.Provider
-          value={{
-            autenticado: this.state.autenticado,
-            otroValor: this.state.otroValor,
-            cambiaLogin: this.cambiaLogin
-          }}>
-          {listaproductos}
-        </ContextoAutenticado.Provider>
+        {listaproductos}
+
 
       </div>
     )
@@ -166,22 +141,4 @@ class RealizarPedido extends React.Component {
 
 export default RealizarPedido;
 
-/*
-    return (
-      <div className={clases.RealizarPedido}>
 
-        <Showhide mostrarocultar={this.mostrarOcultar} />
-        <ContextoAutenticado.Provider
-          value={{
-            autenticado: this.state.autenticado,
-            otroValor: this.state.otroValor,
-            cambiaLogin: this.cambiaLogin
-          }}>
-          {listaproductos}
-        </ContextoAutenticado.Provider>
-
-      </div>
-    )
-
-
-*/

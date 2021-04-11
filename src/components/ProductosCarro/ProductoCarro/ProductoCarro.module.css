@@ -1,0 +1,7 @@
+.ProductoCarro {
+    width: 70%;
+    margin: 16px auto;
+    border-bottom: 1px solid rgb(56, 56, 56);
+    border-top: 1px solid rgb(56, 56, 56);
+    padding: 16px;
+}
