@@ -15,19 +15,24 @@ class Formulario extends React.Component {
     }
 
     grabaPedido = () => {
-        const data = {
-            nombre: this.state.nombre,
-            apellido1: this.state.apellido1,
-            apellido2: this.state.apellido2,
-            telefono: this.state.telefono,
-            mail: this.state.mail,
-            direccion: this.state.direccion,
-            carrito: this.props.carrito_contenido,
-        };
-        axios.post('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/pedidos.json', data)
-            .then(response => {
-                this.setState({grabado:true});
-            });
+        if (this.state.nombre!=''&&this.state.apellido1!=''&&this.state.apellido2!=''&&this.state.telefono!=''&&this.state.mail!=''&&this.state.direccion!=''){
+            const data = {
+                nombre: this.state.nombre,
+                apellido1: this.state.apellido1,
+                apellido2: this.state.apellido2,
+                telefono: this.state.telefono,
+                mail: this.state.mail,
+                direccion: this.state.direccion,
+                carrito: this.props.carrito_contenido,
+            };
+            axios.post('https://dsm-ainhoa-default-rtdb.europe-west1.firebasedatabase.app/pedidos.json', data)
+                .then(response => {
+                    this.setState({grabado:true});
+                });
+        }else{
+            alert('Por favor, rellene todos los campos del formulario para poder realizar el pedido');
+        }
+
     }
 
     render() {
